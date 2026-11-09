@@ -1,0 +1,477 @@
+{
+  "2": {
+    "active_sketch": null,
+    "bodies": [
+      {
+        "area_mm2": 12433.0,
+        "bbox": {
+          "max": [
+            42.0,
+            27.5,
+            24.0
+          ],
+          "min": [
+            -29.0,
+            -20.0,
+            0.0
+          ]
+        },
+        "center_of_mass": [
+          6.5,
+          3.75,
+          12.0
+        ],
+        "closed": true,
+        "edges": 12,
+        "face_types": {
+          "plane": 6
+        },
+        "faces": 6,
+        "kernel": {
+          "edges": 12,
+          "faces": 6,
+          "shells": 1,
+          "vertices": 8
+        },
+        "name": "Body1",
+        "vertices": 8,
+        "visible": true,
+        "volume_mm3": 80940.0
+      }
+    ],
+    "dirty": true,
+    "hidden_origin": [],
+    "marker": 2,
+    "metadata": {},
+    "name": "Untitled",
+    "params": [],
+    "path": null,
+    "redo": 0,
+    "revision": 5,
+    "selection": [],
+    "sketches": [
+      {
+        "curves": 4,
+        "dof": 4,
+        "id": 1,
+        "name": "Sketch1",
+        "profiles": 1,
+        "status": "solved",
+        "visible": false
+      }
+    ],
+    "timeline": [
+      {
+        "boolean_diagnostics": {
+          "events": [],
+          "truncated": false
+        },
+        "error": null,
+        "id": 1,
+        "ms": 2.6891,
+        "name": "Sketch1",
+        "rolled_back": false,
+        "suppressed": false,
+        "type": "Sketch",
+        "warning": null
+      },
+      {
+        "boolean_diagnostics": {
+          "events": [],
+          "truncated": false
+        },
+        "error": null,
+        "id": 2,
+        "ms": 8.4433,
+        "name": "Extrude1",
+        "rolled_back": false,
+        "suppressed": false,
+        "type": "ExtrudeFeature",
+        "warning": null
+      }
+    ],
+    "undo": 2,
+    "units": "mm"
+  },
+  "3": {
+    "body": "Body1",
+    "faces": [
+      {
+        "area": 3372.5,
+        "centroid": [
+          6.5,
+          3.75,
+          0.0
+        ],
+        "exact": true,
+        "index": 0,
+        "name": "F2:start",
+        "plane_normal": [
+          0.0,
+          -0.0,
+          -1.0
+        ],
+        "point": [
+          25.461971389763782,
+          -3.4619713897637836,
+          0.0
+        ]
+      },
+      {
+        "area": 1704.0,
+        "centroid": [
+          6.5,
+          -20.0,
+          12.0
+        ],
+        "exact": true,
+        "index": 1,
+        "name": "F2:side:l1",
+        "plane_normal": [
+          0.0,
+          -1.0,
+          -0.0
+        ],
+        "point": [
+          31.973323845103465,
+          -20.0,
+          10.026676154896535
+        ]
+      },
+      {
+        "area": 1140.0,
+        "centroid": [
+          42.0,
+          3.75,
+          12.0
+        ],
+        "exact": true,
+        "index": 2,
+        "name": "F2:side:l2",
+        "plane_normal": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "point": [
+          42.0,
+          18.359443812300924,
+          9.140556187699074
+        ]
+      },
+      {
+        "area": 1704.0,
+        "centroid": [
+          6.5,
+          27.5,
+          12.0
+        ],
+        "exact": true,
+        "index": 3,
+        "name": "F2:side:l3",
+        "plane_normal": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "point": [
+          -18.973323845103465,
+          27.5,
+          10.026676154896535
+        ]
+      },
+      {
+        "area": 1140.0,
+        "centroid": [
+          -29.0,
+          3.75,
+          12.0
+        ],
+        "exact": true,
+        "index": 4,
+        "name": "F2:side:l4",
+        "plane_normal": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "point": [
+          -29.0,
+          -10.859443812300926,
+          9.140556187699074
+        ]
+      },
+      {
+        "area": 3372.5,
+        "centroid": [
+          6.5,
+          3.75,
+          24.0
+        ],
+        "exact": true,
+        "index": 5,
+        "name": "F2:top",
+        "plane_normal": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "point": [
+          25.461971389763782,
+          -3.4619713897637836,
+          24.0
+        ]
+      }
+    ]
+  },
+  "4": {
+    "body": "Body1",
+    "edges": [
+      {
+        "end": [
+          -29.0,
+          27.5,
+          0.0
+        ],
+        "index": 0,
+        "length": 47.5,
+        "mid": [
+          -29.0,
+          3.75,
+          0.0
+        ],
+        "name": "F2:side:l4|F2:start",
+        "start": [
+          -29.0,
+          -20.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          27.5,
+          0.0
+        ],
+        "index": 1,
+        "length": 71.0,
+        "mid": [
+          6.5,
+          27.5,
+          0.0
+        ],
+        "name": "F2:side:l3|F2:start",
+        "start": [
+          -29.0,
+          27.5,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          -20.0,
+          0.0
+        ],
+        "index": 2,
+        "length": 47.5,
+        "mid": [
+          42.0,
+          3.75,
+          0.0
+        ],
+        "name": "F2:side:l2|F2:start",
+        "start": [
+          42.0,
+          27.5,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          -20.0,
+          0.0
+        ],
+        "index": 3,
+        "length": 71.0,
+        "mid": [
+          6.5,
+          -20.0,
+          0.0
+        ],
+        "name": "F2:side:l1|F2:start",
+        "start": [
+          42.0,
+          -20.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          -20.0,
+          24.0
+        ],
+        "index": 4,
+        "length": 24.0,
+        "mid": [
+          42.0,
+          -20.0,
+          12.0
+        ],
+        "name": "F2:side:l1|F2:side:l2",
+        "start": [
+          42.0,
+          -20.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          -20.0,
+          24.0
+        ],
+        "index": 5,
+        "length": 71.0,
+        "mid": [
+          6.5,
+          -20.0,
+          24.0
+        ],
+        "name": "F2:side:l1|F2:top",
+        "start": [
+          42.0,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          -20.0,
+          0.0
+        ],
+        "index": 6,
+        "length": 24.0,
+        "mid": [
+          -29.0,
+          -20.0,
+          12.0
+        ],
+        "name": "F2:side:l1|F2:side:l4",
+        "start": [
+          -29.0,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          27.5,
+          24.0
+        ],
+        "index": 7,
+        "length": 24.0,
+        "mid": [
+          42.0,
+          27.5,
+          12.0
+        ],
+        "name": "F2:side:l2|F2:side:l3",
+        "start": [
+          42.0,
+          27.5,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          -20.0,
+          24.0
+        ],
+        "index": 8,
+        "length": 47.5,
+        "mid": [
+          42.0,
+          3.75,
+          24.0
+        ],
+        "name": "F2:side:l2|F2:top",
+        "start": [
+          42.0,
+          27.5,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          27.5,
+          24.0
+        ],
+        "index": 9,
+        "length": 24.0,
+        "mid": [
+          -29.0,
+          27.5,
+          12.0
+        ],
+        "name": "F2:side:l3|F2:side:l4",
+        "start": [
+          -29.0,
+          27.5,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          27.5,
+          24.0
+        ],
+        "index": 10,
+        "length": 71.0,
+        "mid": [
+          6.5,
+          27.5,
+          24.0
+        ],
+        "name": "F2:side:l3|F2:top",
+        "start": [
+          -29.0,
+          27.5,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          27.5,
+          24.0
+        ],
+        "index": 11,
+        "length": 47.5,
+        "mid": [
+          -29.0,
+          3.75,
+          24.0
+        ],
+        "name": "F2:side:l4|F2:top",
+        "start": [
+          -29.0,
+          -20.0,
+          24.0
+        ]
+      }
+    ]
+  },
+  "5": {
+    "bytes": 1203,
+    "format": "ThreeMfTagged",
+    "path": "E:\\solidcraft\\topology-visualization\\before.3mf"
+  }
+}

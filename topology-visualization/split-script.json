@@ -1,0 +1,375 @@
+{
+  "about": {
+    "design": "Untitled",
+    "format": "solidcraft/48",
+    "replay": "solidcraft-cli eval script.json (timeline.add steps need a build that reads this design format)",
+    "version": "0.30.1"
+  },
+  "commands": [
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "id": 1,
+          "name": "Sketch1",
+          "plane": {
+            "name": "XY",
+            "type": "origin"
+          },
+          "sketch": {
+            "constraints": [
+              {
+                "id": "k1",
+                "l": 0,
+                "type": "horizontal"
+              },
+              {
+                "id": "k2",
+                "l": 2,
+                "type": "horizontal"
+              },
+              {
+                "id": "k3",
+                "l": 1,
+                "type": "vertical"
+              },
+              {
+                "id": "k4",
+                "l": 3,
+                "type": "vertical"
+              }
+            ],
+            "counters": {
+              "k": 4,
+              "l": 4,
+              "p": 4
+            },
+            "curves": [
+              {
+                "a": 1,
+                "b": 2,
+                "construction": false,
+                "id": "l1",
+                "type": "line"
+              },
+              {
+                "a": 2,
+                "b": 3,
+                "construction": false,
+                "id": "l2",
+                "type": "line"
+              },
+              {
+                "a": 3,
+                "b": 4,
+                "construction": false,
+                "id": "l3",
+                "type": "line"
+              },
+              {
+                "a": 4,
+                "b": 1,
+                "construction": false,
+                "id": "l4",
+                "type": "line"
+              }
+            ],
+            "points": [
+              {
+                "fixed": true,
+                "id": "origin",
+                "pos": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "p1",
+                "pos": [
+                  -29,
+                  -20
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "p2",
+                "pos": [
+                  42,
+                  -20
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "p3",
+                "pos": [
+                  42,
+                  27.5
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "p4",
+                "pos": [
+                  -29,
+                  27.5
+                ]
+              }
+            ]
+          },
+          "suppressed": false,
+          "type": "sketch"
+        }
+      }
+    },
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "body_names": [
+            "Body1"
+          ],
+          "extent": {
+            "convention": "total_distance",
+            "direction": "positive",
+            "distance": "24 mm"
+          },
+          "id": 2,
+          "name": "Extrude1",
+          "operation": "new_body",
+          "param_names": [
+            "d1"
+          ],
+          "profiles": {
+            "loops": [
+              [
+                "l1",
+                "l2",
+                "l3",
+                "l4"
+              ]
+            ],
+            "type": "curves"
+          },
+          "sketch": 1,
+          "suppressed": false,
+          "type": "extrude"
+        }
+      }
+    },
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "id": 3,
+          "name": "Sketch2",
+          "plane": {
+            "anchor": {
+              "author_path": [],
+              "component": 0,
+              "coordinates": [
+                0,
+                0
+              ],
+              "path": [],
+              "target": {
+                "body": "Body1",
+                "certificate": {
+                  "curve": "l1",
+                  "kind": "extrude_side",
+                  "sketch": 1
+                },
+                "name": "F2:side:l1",
+                "origin_feature": 2,
+                "point": [
+                  0,
+                  -20,
+                  0
+                ]
+              },
+              "x_axis": [
+                1,
+                0
+              ]
+            },
+            "at": [
+              7.442069102913592,
+              -20,
+              14.4713585959297
+            ],
+            "name": "F2:side:l1",
+            "plane": {
+              "origin": [
+                0,
+                -20,
+                0
+              ],
+              "x_dir": [
+                1,
+                0,
+                0
+              ],
+              "y_dir": [
+                0,
+                0,
+                1
+              ]
+            },
+            "type": "face"
+          },
+          "sketch": {
+            "constraints": [],
+            "counters": {
+              "c": 1,
+              "j": 1,
+              "l": 4,
+              "p": 4
+            },
+            "curves": [
+              {
+                "a": 1,
+                "b": 2,
+                "construction": false,
+                "id": "l1",
+                "link": "j1",
+                "type": "line"
+              },
+              {
+                "a": 3,
+                "b": 2,
+                "construction": false,
+                "id": "l2",
+                "link": "j1",
+                "type": "line"
+              },
+              {
+                "a": 4,
+                "b": 1,
+                "construction": false,
+                "id": "l3",
+                "link": "j1",
+                "type": "line"
+              },
+              {
+                "a": 3,
+                "b": 4,
+                "construction": false,
+                "id": "l4",
+                "link": "j1",
+                "type": "line"
+              },
+              {
+                "c": 5,
+                "construction": false,
+                "id": "c1",
+                "r": 8.077747210701755,
+                "type": "circle"
+              }
+            ],
+            "links": [
+              {
+                "auto_face": true,
+                "face_name": "F2:side:l1",
+                "id": "j1",
+                "kind": "project",
+                "source": {
+                  "at": [
+                    18.333333333333332,
+                    -20,
+                    8
+                  ],
+                  "body": "Body1",
+                  "type": "face"
+                }
+              }
+            ],
+            "points": [
+              {
+                "fixed": true,
+                "id": "origin",
+                "pos": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "fixed": true,
+                "id": "p1",
+                "link": "j1",
+                "pos": [
+                  -29,
+                  24
+                ]
+              },
+              {
+                "fixed": true,
+                "id": "p2",
+                "link": "j1",
+                "pos": [
+                  -29,
+                  0
+                ]
+              },
+              {
+                "fixed": true,
+                "id": "p3",
+                "link": "j1",
+                "pos": [
+                  42,
+                  0
+                ]
+              },
+              {
+                "fixed": true,
+                "id": "p4",
+                "link": "j1",
+                "pos": [
+                  42,
+                  24
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "c1.center",
+                "pos": [
+                  5.5,
+                  19
+                ]
+              }
+            ]
+          },
+          "suppressed": false,
+          "type": "sketch"
+        }
+      }
+    },
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "extent": {
+            "convention": "total_distance",
+            "direction": "positive",
+            "distance": "-59 mm"
+          },
+          "id": 4,
+          "name": "Extrude2",
+          "operation": "cut",
+          "param_names": [
+            "d2"
+          ],
+          "profiles": {
+            "indices": [
+              1,
+              2
+            ],
+            "type": "indices"
+          },
+          "sketch": 3,
+          "suppressed": false,
+          "type": "extrude"
+        }
+      }
+    }
+  ]
+}

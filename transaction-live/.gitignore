@@ -1,0 +1,7 @@
+__pycache__/
+records/
+.work/
+integration-fixture/
+verification-records/
+test-rebuild-*/
+test-rebuild-fixture-*/

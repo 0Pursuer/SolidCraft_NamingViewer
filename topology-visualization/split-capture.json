@@ -1,0 +1,686 @@
+{
+  "2": {
+    "active_sketch": null,
+    "bodies": [
+      {
+        "area_mm2": 13192.335958433072,
+        "bbox": {
+          "max": [
+            42.0,
+            27.500000000000018,
+            24.0
+          ],
+          "min": [
+            -29.0,
+            -20.000000000000014,
+            0.0
+          ]
+        },
+        "center_of_mass": [
+          6.616458122759383,
+          3.7500000000000004,
+          11.296288551252657
+        ],
+        "closed": true,
+        "edges": 18,
+        "face_types": {
+          "cylinder": 1,
+          "plane": 7
+        },
+        "faces": 8,
+        "kernel": {
+          "edges": 18,
+          "faces": 8,
+          "shells": 1,
+          "vertices": 12
+        },
+        "name": "Body1",
+        "vertices": 12,
+        "visible": true,
+        "volume_mm3": 72497.12134294157
+      }
+    ],
+    "dirty": true,
+    "hidden_origin": [],
+    "marker": 4,
+    "metadata": {},
+    "name": "Untitled",
+    "params": [],
+    "path": null,
+    "redo": 0,
+    "revision": 9,
+    "selection": [],
+    "sketches": [
+      {
+        "curves": 4,
+        "dof": 4,
+        "id": 1,
+        "name": "Sketch1",
+        "profiles": 1,
+        "status": "solved",
+        "visible": false
+      },
+      {
+        "curves": 5,
+        "dof": 3,
+        "id": 3,
+        "name": "Sketch2",
+        "profiles": 3,
+        "status": "solved",
+        "visible": false
+      }
+    ],
+    "timeline": [
+      {
+        "boolean_diagnostics": {
+          "events": [],
+          "truncated": false
+        },
+        "error": null,
+        "id": 1,
+        "ms": 0.3386,
+        "name": "Sketch1",
+        "rolled_back": false,
+        "suppressed": false,
+        "type": "Sketch",
+        "warning": null
+      },
+      {
+        "boolean_diagnostics": {
+          "events": [],
+          "truncated": false
+        },
+        "error": null,
+        "id": 2,
+        "ms": 3.7095000000000002,
+        "name": "Extrude1",
+        "rolled_back": false,
+        "suppressed": false,
+        "type": "ExtrudeFeature",
+        "warning": null
+      },
+      {
+        "boolean_diagnostics": {
+          "events": [],
+          "truncated": false
+        },
+        "error": null,
+        "id": 3,
+        "ms": 2.7014,
+        "name": "Sketch2",
+        "rolled_back": false,
+        "suppressed": false,
+        "type": "Sketch",
+        "warning": null
+      },
+      {
+        "boolean_diagnostics": {
+          "events": [],
+          "truncated": false
+        },
+        "error": null,
+        "id": 4,
+        "ms": 49.719699999999996,
+        "name": "Extrude2",
+        "rolled_back": false,
+        "suppressed": false,
+        "type": "ExtrudeFeature",
+        "warning": null
+      }
+    ],
+    "undo": 4,
+    "units": "mm"
+  },
+  "3": {
+    "body": "Body1",
+    "faces": [
+      {
+        "area": 1527.9291082796522,
+        "centroid": [
+          6.6152349875175736,
+          -20.000000000000007,
+          11.301361230165186
+        ],
+        "exact": true,
+        "index": 0,
+        "name": "F2:side:l1",
+        "plane_normal": [
+          -0.0,
+          -1.0,
+          0.0
+        ],
+        "point": [
+          34.07450492289778,
+          -20.000000000000007,
+          13.895713389027131
+        ]
+      },
+      {
+        "area": 3372.5,
+        "centroid": [
+          6.5,
+          3.75,
+          0.0
+        ],
+        "exact": true,
+        "index": 1,
+        "name": "F2:start",
+        "plane_normal": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "point": [
+          -12.461971389763784,
+          -3.4619713897637836,
+          0.0
+        ]
+      },
+      {
+        "area": 1140.0,
+        "centroid": [
+          -29.0,
+          3.75,
+          12.0
+        ],
+        "exact": true,
+        "index": 2,
+        "name": "F2:side:l4",
+        "plane_normal": [
+          -1.0,
+          -0.0,
+          0.0
+        ],
+        "point": [
+          -29.0,
+          -10.859443812300926,
+          14.859443812300926
+        ]
+      },
+      {
+        "area": 1337.396283414324,
+        "centroid": [
+          -14.92214438511238,
+          3.7500000000000027,
+          24.0
+        ],
+        "exact": true,
+        "index": 3,
+        "name": "F2:top#[F2:side:l4]",
+        "plane_normal": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "point": [
+          -11.063295826839928,
+          -9.78099294338483,
+          24.0
+        ]
+      },
+      {
+        "area": 1712.5958024848123,
+        "centroid": [
+          5.500000000000005,
+          3.750000000000002,
+          16.18422125497405
+        ],
+        "cylinder": {
+          "axis": [
+            0.0,
+            -1.0,
+            -0.0
+          ],
+          "origin": [
+            5.500000000000007,
+            -20.0,
+            19.0
+          ],
+          "radius": 8.07774721070176
+        },
+        "exact": true,
+        "index": 4,
+        "name": "F4:side:c1",
+        "plane_normal": null,
+        "point": [
+          4.293819178965277,
+          22.420347001715683,
+          11.012814774467287
+        ]
+      },
+      {
+        "area": 1432.3962834143238,
+        "centroid": [
+          26.922144385112375,
+          3.749999999999999,
+          24.0
+        ],
+        "exact": true,
+        "index": 5,
+        "name": "F2:top#[F2:side:l2]",
+        "plane_normal": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "point": [
+          31.30405206915325,
+          -9.304052069153258,
+          24.0
+        ]
+      },
+      {
+        "area": 1140.0,
+        "centroid": [
+          42.0,
+          3.75,
+          12.0
+        ],
+        "exact": true,
+        "index": 6,
+        "name": "F2:side:l2",
+        "plane_normal": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "point": [
+          42.0,
+          -10.859443812300926,
+          9.140556187699074
+        ]
+      },
+      {
+        "area": 1527.9291082796522,
+        "centroid": [
+          6.615234987517575,
+          27.499999999999996,
+          11.301361230165186
+        ],
+        "exact": true,
+        "index": 7,
+        "name": "F2:side:l3",
+        "plane_normal": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "point": [
+          34.07450492289778,
+          27.499999999999993,
+          13.895713389027131
+        ]
+      }
+    ]
+  },
+  "4": {
+    "body": "Body1",
+    "edges": [
+      {
+        "end": [
+          42.0,
+          -20.0,
+          24.0
+        ],
+        "index": 0,
+        "length": 24.0,
+        "mid": [
+          42.0,
+          -20.0,
+          12.0
+        ],
+        "name": "F2:side:l1|F2:side:l2",
+        "start": [
+          42.0,
+          -20.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          11.844288770224756,
+          -20.0,
+          24.0
+        ],
+        "index": 1,
+        "length": 30.155711229775243,
+        "mid": [
+          26.92214438511238,
+          -20.0,
+          24.0
+        ],
+        "name": "F2:side:l1|F2:top#[F2:side:l2]",
+        "start": [
+          42.0,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -0.8442887702247601,
+          -20.0,
+          24.0
+        ],
+        "index": 2,
+        "length": 36.05464847350379,
+        "mid": [
+          5.499999999999991,
+          -20.0,
+          10.92225278929824
+        ],
+        "name": "F2:side:l1|F4:side:c1",
+        "start": [
+          11.844288770224757,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          -20.0,
+          24.0
+        ],
+        "index": 3,
+        "length": 28.15571122977524,
+        "mid": [
+          -14.92214438511238,
+          -20.0,
+          24.0
+        ],
+        "name": "F2:side:l1|F2:top#[F2:side:l4]",
+        "start": [
+          -0.844288770224761,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          -20.0,
+          0.0
+        ],
+        "index": 4,
+        "length": 24.0,
+        "mid": [
+          -29.0,
+          -20.0,
+          12.0
+        ],
+        "name": "F2:side:l1|F2:side:l4",
+        "start": [
+          -29.0,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          -20.0,
+          0.0
+        ],
+        "index": 5,
+        "length": 71.0,
+        "mid": [
+          6.5,
+          -20.0,
+          0.0
+        ],
+        "name": "F2:side:l1|F2:start",
+        "start": [
+          -29.0,
+          -20.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          27.5,
+          0.0
+        ],
+        "index": 6,
+        "length": 47.5,
+        "mid": [
+          -29.0,
+          3.75,
+          0.0
+        ],
+        "name": "F2:side:l4|F2:start",
+        "start": [
+          -29.0,
+          -20.0,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          27.5,
+          0.0
+        ],
+        "index": 7,
+        "length": 71.0,
+        "mid": [
+          6.5,
+          27.5,
+          0.0
+        ],
+        "name": "F2:side:l3|F2:start",
+        "start": [
+          -29.0,
+          27.5,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          -20.0,
+          0.0
+        ],
+        "index": 8,
+        "length": 47.5,
+        "mid": [
+          42.0,
+          3.75,
+          0.0
+        ],
+        "name": "F2:side:l2|F2:start",
+        "start": [
+          42.0,
+          27.5,
+          0.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          27.5,
+          24.0
+        ],
+        "index": 9,
+        "length": 47.5,
+        "mid": [
+          -29.0,
+          3.75,
+          24.0
+        ],
+        "name": "F2:side:l4|F2:top#[F2:side:l4]",
+        "start": [
+          -29.0,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          27.5,
+          0.0
+        ],
+        "index": 10,
+        "length": 24.0,
+        "mid": [
+          -29.0,
+          27.5,
+          12.0
+        ],
+        "name": "F2:side:l3|F2:side:l4",
+        "start": [
+          -29.0,
+          27.5,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -0.8442887702247601,
+          27.5,
+          24.0
+        ],
+        "index": 11,
+        "length": 47.5,
+        "mid": [
+          -0.8442887702247601,
+          3.75,
+          24.0
+        ],
+        "name": "F2:top#[F2:side:l4]|F4:side:c1",
+        "start": [
+          -0.8442887702247601,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -29.0,
+          27.5,
+          24.0
+        ],
+        "index": 12,
+        "length": 28.15571122977524,
+        "mid": [
+          -14.92214438511238,
+          27.5,
+          24.0
+        ],
+        "name": "F2:side:l3|F2:top#[F2:side:l4]",
+        "start": [
+          -0.844288770224761,
+          27.5,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          11.844288770224756,
+          27.5,
+          24.0
+        ],
+        "index": 13,
+        "length": 47.5,
+        "mid": [
+          11.844288770224756,
+          3.75,
+          24.0
+        ],
+        "name": "F2:top#[F2:side:l2]|F4:side:c1",
+        "start": [
+          11.844288770224756,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          -0.8442887702247601,
+          27.5,
+          24.0
+        ],
+        "index": 14,
+        "length": 36.05464847350379,
+        "mid": [
+          5.499999999999991,
+          27.499999999999996,
+          10.92225278929824
+        ],
+        "name": "F2:side:l3|F4:side:c1",
+        "start": [
+          11.844288770224757,
+          27.5,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          27.5,
+          24.0
+        ],
+        "index": 15,
+        "length": 47.5,
+        "mid": [
+          42.0,
+          3.75,
+          24.0
+        ],
+        "name": "F2:side:l2|F2:top#[F2:side:l2]",
+        "start": [
+          42.0,
+          -20.0,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          11.844288770224756,
+          27.5,
+          24.0
+        ],
+        "index": 16,
+        "length": 30.155711229775243,
+        "mid": [
+          26.92214438511238,
+          27.5,
+          24.0
+        ],
+        "name": "F2:side:l3|F2:top#[F2:side:l2]",
+        "start": [
+          42.0,
+          27.5,
+          24.0
+        ]
+      },
+      {
+        "end": [
+          42.0,
+          27.5,
+          24.0
+        ],
+        "index": 17,
+        "length": 24.0,
+        "mid": [
+          42.0,
+          27.5,
+          12.0
+        ],
+        "name": "F2:side:l2|F2:side:l3",
+        "start": [
+          42.0,
+          27.5,
+          0.0
+        ]
+      }
+    ]
+  },
+  "5": {
+    "bytes": 21564,
+    "format": "ThreeMfTagged",
+    "path": "E:\\solidcraft\\topology-visualization\\split.3mf"
+  }
+}

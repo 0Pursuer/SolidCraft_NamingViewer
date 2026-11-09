@@ -1,0 +1,91 @@
+# Local Python / browser tooling
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.playwright-cli/
+.cache/
+.repo-checkout-*/
+
+# Credentials, process state and local configuration
+.env
+.env.*
+!.env.example
+*.token
+*.pid
+*.log
+*.lock
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+*.db-journal
+*.key
+*.p12
+*.pfx
+
+# Installed applications, downloaded research and CAD exports
+/investigation/
+*.msi
+*.exe
+*.dll
+*.zip
+*.7z
+*.3mf
+*.step
+*.stp
+*.brep
+*.stl
+# These small tagged meshes are deliberate, offline regression fixtures.
+!/topology-visualization/before.3mf
+!/topology-visualization/split.3mf
+!/topology-visualization/chamfer.3mf
+!/topology-live/debug-curve/source.3mf
+
+# Live viewer state, captures and ad-hoc verification products
+.runtime/
+.work/
+test-*/
+startup-test-*/
+verification-control*/
+/topology-live/tmp*/
+/topology-live/*.png
+/topology-live/current-flange-*.json
+/topology-live/debug-*-api.json
+/topology-live/flange-live-audit/
+/topology-live/live-first-snapshot.json
+/topology-live/verification-startup.json
+/topology-live/live-ui-syntax.js
+/topology-live/live-ui-check.js
+/topology-live/live-ui-check-template.js
+
+# Offline sample viewer: retain source scripts, fixtures and runnable HTML.
+/topology-visualization/*.png
+/topology-visualization/live-*.json
+/topology-visualization/current-model-script.json
+/topology-visualization/data-validation.json
+/topology-visualization/verification-*.json
+/topology-visualization/viewer-syntax-check.js
+/topology-visualization/browser-check.js
+
+# Modeling archives contain real designs and must never enter source control.
+/transaction-live/records/
+/transaction-live/verification/
+/transaction-live/verification-records/
+/transaction-live/integration-fixture/
+/transaction-live/ui-*.png
+
+# Operating system clutter
+Thumbs.db
+Desktop.ini
+.DS_Store

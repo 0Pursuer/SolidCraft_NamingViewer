@@ -1,0 +1,161 @@
+{
+  "about": {
+    "design": "Untitled",
+    "format": "solidcraft/48",
+    "replay": "solidcraft-cli eval script.json (timeline.add steps need a build that reads this design format)",
+    "version": "0.30.1"
+  },
+  "commands": [
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "id": 1,
+          "name": "Sketch1",
+          "plane": {
+            "name": "XY",
+            "type": "origin"
+          },
+          "sketch": {
+            "constraints": [
+              {
+                "id": "k1",
+                "l": 0,
+                "type": "horizontal"
+              },
+              {
+                "id": "k2",
+                "l": 2,
+                "type": "horizontal"
+              },
+              {
+                "id": "k3",
+                "l": 1,
+                "type": "vertical"
+              },
+              {
+                "id": "k4",
+                "l": 3,
+                "type": "vertical"
+              }
+            ],
+            "counters": {
+              "k": 4,
+              "l": 4,
+              "p": 4
+            },
+            "curves": [
+              {
+                "a": 1,
+                "b": 2,
+                "construction": false,
+                "id": "l1",
+                "type": "line"
+              },
+              {
+                "a": 2,
+                "b": 3,
+                "construction": false,
+                "id": "l2",
+                "type": "line"
+              },
+              {
+                "a": 3,
+                "b": 4,
+                "construction": false,
+                "id": "l3",
+                "type": "line"
+              },
+              {
+                "a": 4,
+                "b": 1,
+                "construction": false,
+                "id": "l4",
+                "type": "line"
+              }
+            ],
+            "points": [
+              {
+                "fixed": true,
+                "id": "origin",
+                "pos": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "p1",
+                "pos": [
+                  -29,
+                  -20
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "p2",
+                "pos": [
+                  42,
+                  -20
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "p3",
+                "pos": [
+                  42,
+                  27.5
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "p4",
+                "pos": [
+                  -29,
+                  27.5
+                ]
+              }
+            ]
+          },
+          "suppressed": false,
+          "type": "sketch"
+        }
+      }
+    },
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "body_names": [
+            "Body1"
+          ],
+          "extent": {
+            "convention": "total_distance",
+            "direction": "positive",
+            "distance": "24 mm"
+          },
+          "id": 2,
+          "name": "Extrude1",
+          "operation": "new_body",
+          "param_names": [
+            "d1"
+          ],
+          "profiles": {
+            "loops": [
+              [
+                "l1",
+                "l2",
+                "l3",
+                "l4"
+              ]
+            ],
+            "type": "curves"
+          },
+          "sketch": 1,
+          "suppressed": false,
+          "type": "extrude"
+        }
+      }
+    }
+  ]
+}
