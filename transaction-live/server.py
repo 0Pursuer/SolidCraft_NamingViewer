@@ -15,6 +15,7 @@ import socket
 import subprocess
 import sys
 import threading
+import time
 from urllib.parse import parse_qs, urlsplit
 import uuid
 import webbrowser
@@ -22,12 +23,23 @@ import webbrowser
 from archive import Archive, ArchiveError, QuotaExceeded
 from native import Recorder, available_instances, select_instance, safe_error
 from rebuild import Rebuilder
+from flow_model import build_flow
+from recompute_model import build_recompute
 from solidcraft_instances import default_control_dir
 
 ROOT = Path(__file__).resolve().parent
 COOKIE = 'solidcraft_trace_session'
 SHA = re.compile(r'[a-f0-9]{64}\Z')
 IDENT = re.compile(r'[A-Za-z0-9_-]{1,100}\Z')
+
+
+def unique_fields(pairs):
+    value = {}
+    for key, item in pairs:
+        if key in value:
+            raise ValueError('JSON 不接受重复字段')
+        value[key] = item
+    return value
 
 
 class LocalServer(ThreadingHTTPServer):
@@ -57,10 +69,13 @@ class LocalServer(ThreadingHTTPServer):
             self.slots.release()
 
 
-def make_handler(archive, recorder, rebuilder, version, token, port):
+def make_handler(archive, recorder, rebuilder, version, token, port, recompute_lab=None):
     host = f'127.0.0.1:{port}'
     origin = 'http://' + host
     export_lock = threading.Lock()
+    cookie_name = f'{COOKIE}_{port}'
+    flow_lock = threading.Lock()
+    flow_cache = {}
 
     class Handler(BaseHTTPRequestHandler):
         server_version = 'SolidCraftTrace/1'
@@ -79,7 +94,7 @@ def make_handler(archive, recorder, rebuilder, version, token, port):
             self.send_header('Cross-Origin-Resource-Policy', 'same-origin')
             self.send_header('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'none'")
             if cookie:
-                self.send_header('Set-Cookie', f'{COOKIE}={token}; HttpOnly; SameSite=Strict; Path=/')
+                self.send_header('Set-Cookie', f'{cookie_name}={token}; HttpOnly; SameSite=Strict; Path=/')
             if attachment:
                 self.send_header('Content-Disposition', f'attachment; filename="{attachment}"')
             self.end_headers()
@@ -105,7 +120,7 @@ def make_handler(archive, recorder, rebuilder, version, token, port):
             cookie = SimpleCookie()
             try:
                 cookie.load(self.headers.get('Cookie', ''))
-                value = cookie.get(COOKIE)
+                value = cookie.get(cookie_name)
                 if value and secrets.compare_digest(value.value, token):
                     return True
             except Exception:
@@ -119,13 +134,67 @@ def make_handler(archive, recorder, rebuilder, version, token, port):
             try:
                 parsed = urlsplit(self.path)
                 path = parsed.path
-                query = parse_qs(parsed.query, max_num_fields=4, strict_parsing=True) if parsed.query else {}
-                if path == '/' and not query:
-                    self.send_data((ROOT / 'viewer.html').read_bytes(), content_type='text/html; charset=utf-8', cookie=True)
+                query = parse_qs(parsed.query, max_num_fields=4, strict_parsing=True, keep_blank_values=True) if parsed.query else {}
+                if path in {'/', '/flow', '/flow.html', '/archive', '/recompute', '/recompute.html'} and not query:
+                    name = 'viewer.html' if path == '/archive' else 'recompute.html' if path.startswith('/recompute') else 'flow.html'
+                    self.send_data((ROOT / name).read_bytes(), content_type='text/html; charset=utf-8', cookie=True)
                     return
                 if not self.authenticated():
                     return
-                if path == '/geometry.html' and not query:
+                if path == '/api/recompute':
+                    if set(query) - {'before_id', 'after_id'} or any(len(v) != 1 for v in query.values()):
+                        raise ValueError('重算视图只接受观察编号')
+                    ids = {k: int(v[0]) for k, v in query.items()}
+                    if any(not 1 <= n <= 2**63 - 1 for n in ids.values()) or bool('before_id' in ids) != bool('after_id' in ids):
+                        raise ValueError('请选择完整的一对观察编号')
+                    with flow_lock:
+                        value = build_recompute(archive, **ids)
+                    value['execution_enabled'] = recompute_lab is not None
+                    data = json.dumps(value, ensure_ascii=False, allow_nan=False).encode('utf-8')
+                    if len(data) > 4 * 1024 * 1024:
+                        raise ValueError('重算视图超过4MiB预算')
+                    self.send_data(data)
+                elif path == '/api/recompute/jobs' and not query:
+                    self.reply({'jobs': recompute_lab.list_jobs() if recompute_lab else []})
+                elif re.fullmatch(r'/api/recompute/jobs/[a-f0-9]{32}', path) and not query:
+                    self.result(recompute_lab.get(path.rsplit('/', 1)[1]) if recompute_lab else None)
+                elif re.fullmatch(r'/api/recompute/jobs/[a-f0-9]{32}/phases/[0-9]{1,2}/assets/[A-Za-z0-9_.-]{1,80}', path) and not query:
+                    if not recompute_lab:
+                        raise FileNotFoundError()
+                    parts = path.split('/')
+                    asset = recompute_lab.asset_path(parts[4], int(parts[6]), parts[8])
+                    if asset.stat().st_size > 64 * 1024 * 1024:
+                        raise ValueError('单个资源超过64MiB读取预算')
+                    data = asset.read_bytes()
+                    mime = 'application/json; charset=utf-8' if asset.suffix == '.json' else 'application/octet-stream'
+                    self.send_data(data, content_type=mime)
+                elif path == '/api/flow':
+                    if set(query) - {'document_id', 'limit'} or any(len(v) != 1 for v in query.values()):
+                        raise ValueError('流程参数不受支持')
+                    document_id = query.get('document_id', [None])[0]
+                    if document_id is not None and (len(document_id) > 200 or not re.fullmatch(r'[A-Za-z0-9_-]+', document_id)):
+                        raise ValueError('文档编号无效')
+                    limit = int(query.get('limit', ['200'])[0])
+                    if not 1 <= limit <= 200:
+                        raise ValueError('流程窗口须为1到200条观察')
+                    with flow_lock:
+                        with archive._lock:
+                            epoch = (archive._db.execute('PRAGMA data_version').fetchone()[0], archive._db.total_changes)
+                        key = (document_id, limit, epoch)
+                        cached = flow_cache.get(key)
+                        if cached and time.monotonic() - cached[0] < 2:
+                            data = cached[1]
+                        else:
+                            value = build_flow(archive, document_id=document_id, limit=limit)
+                            value['view_mode'] = 'recorder' if recorder else ('read_only' if archive.read_only else 'offline')
+                            data = json.dumps(value, ensure_ascii=False, allow_nan=False).encode('utf-8')
+                            if len(data) > 4 * 1024 * 1024:
+                                raise ValueError('流程数据超过4MiB，请缩小观察窗口')
+                            if len(flow_cache) >= 4:
+                                flow_cache.clear()
+                            flow_cache[key] = (time.monotonic(), data)
+                    self.send_data(data)
+                elif path == '/geometry.html' and not query:
                     self.send_data((ROOT / 'geometry.html').read_bytes(), content_type='text/html; charset=utf-8')
                 elif path == '/api/status' and not query:
                     state = recorder.status() if recorder else {'recording': False, 'status': 'offline', 'error': None, 'session_id': None, 'instance': None}
@@ -188,10 +257,22 @@ def make_handler(archive, recorder, rebuilder, version, token, port):
                 length = int(self.headers.get('Content-Length', '-1'))
                 if not 0 <= length <= 1024:
                     raise ValueError('请求体超过上限')
-                body = json.loads(self.rfile.read(length))
+                body = json.loads(self.rfile.read(length), object_pairs_hook=unique_fields)
                 if not isinstance(body, dict):
                     raise ValueError('请求体必须是对象')
-                if self.path == '/api/capture' and body == {}:
+                if self.path == '/api/recompute/jobs' and set(body) == {'before_id', 'after_id', 'mode'}:
+                    if not recompute_lab:
+                        raise ValueError('当前服务未启用隔离CLI实验')
+                    if type(body['before_id']) is not int or type(body['after_id']) is not int or body['mode'] not in ('edit_undo', 'full'):
+                        raise ValueError('实验参数无效')
+                    self.reply(recompute_lab.submit(body['before_id'], body['after_id'], body['mode']), 202)
+                elif re.fullmatch(r'/api/recompute/jobs/[a-f0-9]{32}/cancel', self.path) and body == {}:
+                    if not recompute_lab:
+                        raise ValueError('隔离CLI实验未启用')
+                    job_id = self.path.split('/')[4]
+                    recompute_lab.cancel(job_id)
+                    self.result(recompute_lab.get(job_id))
+                elif self.path == '/api/capture' and body == {}:
                     if not recorder:
                         raise ValueError('离线档案未连接现场实例')
                     self.reply(recorder.request_capture(), 202)
@@ -250,9 +331,9 @@ def make_handler(archive, recorder, rebuilder, version, token, port):
     return Handler
 
 
-def create_server(archive, recorder=None, rebuilder=None, version='unknown', port=0):
+def create_server(archive, recorder=None, rebuilder=None, version='unknown', port=0, recompute_lab=None):
     http = LocalServer(('127.0.0.1', port), BaseHTTPRequestHandler)
-    http.RequestHandlerClass = make_handler(archive, recorder, rebuilder, version, secrets.token_urlsafe(32), http.server_port)
+    http.RequestHandlerClass = make_handler(archive, recorder, rebuilder, version, secrets.token_urlsafe(32), http.server_port, recompute_lab)
     return http
 
 
@@ -276,6 +357,7 @@ def options(argv=None):
     parser.add_argument('--list-instances', action='store_true')
     parser.add_argument('--cli', type=Path, default=Path(os.environ.get('ProgramFiles', 'C:/Program Files')) / 'SolidCraft' / 'solidcraft-cli.exe')
     parser.add_argument('--rebuild-timeout', type=int, default=120)
+    parser.add_argument('--recompute-lab', action='store_true', help='在独立CLI中演示重算，仅读取原始档案')
     parser.add_argument('--port', type=int, default=0)
     parser.add_argument('--open', action='store_true')
     args = parser.parse_args(argv)
@@ -285,6 +367,8 @@ def options(argv=None):
         parser.error('端口无效')
     if (args.offline or args.read_only) and not args.archive:
         parser.error('离线/只读模式需指定 --archive')
+    if args.recompute_lab and not args.read_only:
+        parser.error('--recompute-lab 需要 --read-only，独立实验不与记录服务的阶段重建并发')
     return args
 
 
@@ -303,13 +387,18 @@ def main(argv=None):
     version = installed_version(args.cli)
     root = args.archive or ROOT / 'records' / (datetime.now().strftime('%Y%m%d-%H%M%S') + '-' + uuid.uuid4().hex[:6])
     archive = Archive(root, limit_bytes=int(args.limit_gib * 1024**3), read_only=args.read_only)
-    recorder = rebuilder = http = None
+    recorder = rebuilder = http = lab = None
     try:
         if choice:
             recorder = Recorder(archive, choice[0], version, choice[1])
         if args.cli.is_file() and not args.read_only:
             rebuilder = Rebuilder(archive, args.cli.resolve(), version, timeout=args.rebuild_timeout)
-        http = create_server(archive, recorder, rebuilder, version, args.port)
+        if args.recompute_lab and args.cli.is_file():
+            from recompute_lab import RecomputeLab
+            import hashlib
+            archive_key = hashlib.sha256(str(archive.root.resolve()).encode('utf-8')).hexdigest()[:20]
+            lab = RecomputeLab(archive, args.cli.resolve(), ROOT / 'recompute-runs' / archive_key, version, timeout=min(args.rebuild_timeout, 600))
+        http = create_server(archive, recorder, rebuilder, version, args.port, recompute_lab=lab)
         if recorder:
             recorder.start()
         url = f'http://127.0.0.1:{http.server_port}/'
@@ -324,6 +413,8 @@ def main(argv=None):
             recorder.stop()
         if rebuilder:
             rebuilder.stop()
+        if lab:
+            lab.stop()
         if http:
             http.server_close()
         archive.close()

@@ -2,6 +2,18 @@
 
 独立的 Windows 本机记录器与浏览器查看器。使用已安装的 SolidCraft 及其 CLI，无需编译或替换 SolidCraft，也不修改原有 `topology-live` 程序。
 
+## 事务与状态流
+
+首页现为流式操作展示：上方按 **已观察的 Undo 操作 → 当前位置 → 已撤销的 Redo 操作** 排列，点击节点，下方按 **操作组 → 特征 → 属性** 展开真实字段变化。右侧可切换变更前后数据；图形仅为包围盒示意，完整带面标签网格仍在“原始档案”中。
+
+例如本次真实实验会显示：**创建草图 → 绘制矩形 → 创建拉伸20 mm → 当前20 mm → 修改高度20→40 mm（已撤销）**。进入编辑器的临时回退和最终提交可以合并为一个有观察证据的操作组，并保留 O0010/O0011 原始记录。
+
+这些操作名称、分组和 Undo/Redo 关联都由文档差异与原生栈深度推断，不能当作原生事务调用树。已有但未采集的历史、断线、未完成快照及记录器会话边界会显示未知提示。页面点击只改变查看内容，不会执行 CAD Undo/Redo。
+
+双击 `start-flow-viewer.cmd` 可读取 `records` 中最近更新的档案，不重启或接管正在运行的记录器；可用 `--archive <目录>` 指定档案。它以独立服务只读观察原档案，不向原档案创建记录或阶段重建任务；重算页面可提交独立 CLI 实验，结果另存于 `recompute-runs/`。`start-transaction-viewer.cmd` 继续负责连接实例并持续记录，首页也使用流程视图。
+
+原有 JSON、历史网格和阶段重建页面保留在 `/archive`。从流程节点进入“原始档案”会直接定位对应的 O 记录。
+
 ## 启动
 
 1. 在自己的 Windows 账号中启动 SolidCraft，开启本机 AI 控制通道。
@@ -98,4 +110,9 @@ py -3 -m unittest test_ui_browser -v
 
 浏览器fixture测试只连接其自己创建的临时本机测试服务器，不连接SolidCraft。它覆盖观察选择、阶段重建界面、草图线框、原始数据安全渲染及手机布局，截图写入本目录。`TRACE_UI_BROWSER` 可指定已有 Chromium/Chrome 可执行文件。
 
+默认测试不读取个人现场档案。原验收样例的可选只读浏览器检查，只有显式设置 `TRACE_REAL_ARCHIVE` 指向对应档案时才启用；干净检出不需要这些运行数据。
+
 `build_geometry.py` 仅用于开发时从仓库内相邻的 `topology-live/live-viewer.html` 适配渲染器，输出本目录的 `geometry.html`；最终交付已包含生成产物，正常运行不需要原程序目录。
+
+
+重算机制演示：启动 start-flow-viewer.cmd 后点击「重算演示」。源码流程与独立 CLI 实测分开显示，说明与边界见 [RECOMPUTE-VERIFICATION.md](RECOMPUTE-VERIFICATION.md)。

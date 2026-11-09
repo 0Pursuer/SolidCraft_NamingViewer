@@ -8,7 +8,7 @@
 | 目录 | 用途 | 启动方式 |
 | --- | --- | --- |
 | [topology-live](topology-live/README.md) | 实时查看原生面、边名称、历史来源状态和显示映射 | 双击 `topology-live/start-live-viewer.cmd` |
-| [transaction-live](transaction-live/README.md) | 记录建模观察、查看历史几何、按需离线重建阶段 | 双击 `transaction-live/start-transaction-viewer.cmd` |
+| [transaction-live](transaction-live/README.md) | 记录建模观察、浏览流程与历史几何、执行隔离重算实验 | 记录用 `start-transaction-viewer.cmd`，读取已有档案用 `start-flow-viewer.cmd` |
 | [topology-visualization](topology-visualization/README.md) | 固定样例的分裂前后及倒角离线演示 | 打开 `topology-visualization/solidcraft-topology.html` |
 
 每个 Windows 用户在自己的账号下启动程序并选择 SolidCraft 实例；网页端口默认由系统分配。
@@ -42,12 +42,13 @@ node test_rotation.js
 在 `transaction-live` 目录执行：
 
 ```powershell
-python -X utf8 -m unittest -v test_archive test_capture_server test_native test_rebuild
+python -X utf8 -m unittest discover -p 'test_*.py' -v
 node --test test_ui.js
 ```
 
 Node.js 仅用于 JavaScript 开发检查。档案模块的部分测试需要已安装的 SolidCraft CLI，
-只使用独立的 headless 临时模型；缺少 CLI 时跳过。可选浏览器测试需要额外安装 Playwright。
+只使用独立的 headless 临时模型；缺少 CLI 时跳过。可选浏览器测试需要额外安装 Playwright，
+默认仅使用临时夹具；原现场样例检查需显式设置 `TRACE_REAL_ARCHIVE` 才启用。
 `integration_live.py` 会创建独立桌面测试实例，不属于普通离线测试命令。
 
 修改实时界面后，用 `python topology-live/build-live-ui.py` 重新生成 HTML；

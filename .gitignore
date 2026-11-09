@@ -11,6 +11,7 @@ htmlcov/
 .playwright-cli/
 .cache/
 .repo-checkout-*/
+.backups/
 
 # Credentials, process state and local configuration
 .env
@@ -83,7 +84,11 @@ verification-control*/
 /transaction-live/verification/
 /transaction-live/verification-records/
 /transaction-live/integration-fixture/
-/transaction-live/ui-*.png
+/transaction-live/recompute-runs/
+/transaction-live/*.png
+/transaction-live/flow-browser-*/
+/transaction-live/recompute-browser-*/
+/transaction-live/lab-fixture-*/
 
 # Operating system clutter
 Thumbs.db

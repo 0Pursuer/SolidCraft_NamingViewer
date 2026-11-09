@@ -23,7 +23,7 @@ function context(file,fetcher=async()=>{throw Error('Unexpected request');}){
   vm.createContext(sandbox);new vm.Script(script(file),{filename:file}).runInContext(sandbox);return{api:window.__traceViewer||window.__traceGeometry,elements,sandbox};
 }
 
-for(const file of ['viewer.html','geometry.html'])test(file+' JavaScript parses',()=>{new vm.Script(script(file),{filename:file});});
+for(const file of ['viewer.html','geometry.html','flow.html','recompute.html'])test(file+' JavaScript parses',()=>{new vm.Script(script(file),{filename:file});});
 
 test('resource routes accept only immutable SHA256 names',()=>{
   const{api}=context('viewer.html');assert.equal(api.assetURL({sha256:'a'.repeat(64)}),'/api/assets/'+'a'.repeat(64));

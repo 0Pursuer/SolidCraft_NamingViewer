@@ -25,7 +25,7 @@ def main():
             page = browser.new_page(viewport={'width': 1536, 'height': 1100})
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))
-            page.goto(f'http://127.0.0.1:{http.server_port}/')
+            page.goto(f'http://127.0.0.1:{http.server_port}/archive')
             page.wait_for_function('() => window.__traceViewer?.state.record')
             page.locator('#event-jump').fill('5')
             page.locator('#event-jump-button').click()
