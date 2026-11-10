@@ -1,56 +1,45 @@
-# SolidCraft 本机观察工具
+# SolidCraft 拓扑命名查看器
 
-面向 Windows 和 SolidCraft 0.30.1 的独立 Python / HTML 工具，不需要编译或替换 SolidCraft。
-需要 Python 3.10+ 和现代浏览器；正常运行只使用 Python 标准库。
+在浏览器中实时查看模型的面、边名称，也可以记录建模过程、回看历史和重算演示。
 
-## 工具
+## 首次准备
 
-| 目录 | 用途 | 启动方式 |
-| --- | --- | --- |
-| [topology-live](topology-live/README.md) | 实时查看原生面、边名称、历史来源状态和显示映射 | 双击 `topology-live/start-live-viewer.cmd` |
-| [transaction-live](transaction-live/README.md) | 记录建模观察、浏览流程与历史几何、执行隔离重算实验 | 记录用 `start-transaction-viewer.cmd`，读取已有档案用 `start-flow-viewer.cmd` |
-| [topology-visualization](topology-visualization/README.md) | 固定样例的分裂前后及倒角离线演示 | 打开 `topology-visualization/solidcraft-topology.html` |
+1. 在 Windows 上安装 **SolidCraft**（已验证版本：0.30.1）和 **Python 3.10 或更新版本**。
+2. 下载本项目并解压到本地文件夹。
+3. 启动 SolidCraft，打开模型，并开启 **AI 控制通道**。
 
-每个 Windows 用户在自己的账号下启动程序并选择 SolidCraft 实例；网页端口默认由系统分配。
-实时查看器固定连接所选的启动实例，断线不会跟随另一实例。名称来源、原生 `exact` 历史标志、
-显示重建是不同信息，不能把它们当作任意拓扑修改后永久稳定的承诺。
+无需编译，也无需额外安装 Python 包。
 
-HTTP 只监听本机，但尚无 Windows 用户身份鉴权；不同网页端口不提供本机用户之间的模型保密隔离。
-建模档案可能包含完整设计，需按模型本身的保密要求管理。
+## 一键启动
 
-## 源码与本机数据
+在项目文件夹中，按需要双击下面的文件：
 
-- 源码、文档、自包含 HTML 和测试必需的固定样例纳入 Git。提交 HTML 后，干净检出即可直接运行。
-- `topology-visualization/` 的三个 `*-capture.json` / `.3mf` 样例，以及
-  `topology-live/debug-curve/` 的 Sample Plate 数据，是有意保留的离线回归测试输入。
-- 现场模型捕获、`transaction-live/records/`、临时导出、凭据、日志、截图、安装包和下载的
-  `investigation/` 研究材料由 `.gitignore` 排除；这些本机文件不会被删除。
-- `VERIFICATION.md` 保存历史验证记录，其中提到的截图和运行证据属于本机产物，不随仓库提供。
-- `transaction-live/start-demo-viewer.cmd` 需要本机已有 `records/verified-demo` 档案；仓库不附带现场档案。
+| 想做什么 | 双击哪个文件 |
+| --- | --- |
+| **实时查看拓扑名称** | [topology-live/start-live-viewer.cmd](topology-live/start-live-viewer.cmd) |
+| **记录建模过程** | [transaction-live/start-transaction-viewer.cmd](transaction-live/start-transaction-viewer.cmd) |
+| **查看已有记录、流程和重算演示** | [transaction-live/start-flow-viewer.cmd](transaction-live/start-flow-viewer.cmd) |
 
-## 开发验证
+实时查看或记录时，按窗口提示选择 SolidCraft 实例；只有一个实例时，直接按 **回车**。
+随后会自动打开浏览器，并自动选择空闲端口，无需手动配置地址。
 
-在 `topology-live` 目录执行：
+**第一次查看建模流程，请先启动“记录建模过程”，在 SolidCraft 中完成一些建模操作。**
+之后启动“查看已有记录”，会自动打开最近更新的档案；点击页面中的“重算演示”可进入对象关系与修改/Undo 演示。
 
-```powershell
-python -X utf8 -m unittest -v test_startup test_instances test_live test_topology_geometry test_name_integrity
-node test_name_ui.js
-node test_selection_integrity.js
-node test_rotation.js
-```
+## 运行与退出
 
-在 `transaction-live` 目录执行：
+- 使用期间保持启动窗口运行；关闭网页后，仍可用窗口中显示的地址重新打开。
+- 停止服务：在启动窗口按 **Ctrl+C**。
+- SolidCraft 退出并重新启动后，请重新启动实时查看器或记录器，选择实例。
+- 多个用户使用时，各自在自己的 Windows 账号下启动并选择自己的实例即可。
 
-```powershell
-python -X utf8 -m unittest discover -p 'test_*.py' -v
-node --test test_ui.js
-```
+## 常见问题
 
-Node.js 仅用于 JavaScript 开发检查。档案模块的部分测试需要已安装的 SolidCraft CLI，
-只使用独立的 headless 临时模型；缺少 CLI 时跳过。可选浏览器测试需要额外安装 Playwright，
-默认仅使用临时夹具；原现场样例检查需显式设置 `TRACE_REAL_ARCHIVE` 才启用。
-`integration_live.py` 会创建独立桌面测试实例，不属于普通离线测试命令。
+| 遇到的情况 | 处理方法 |
+| --- | --- |
+| 提示需要 Python | 安装 Python 3.10 或更新版本后，重新双击启动脚本。 |
+| 找不到 SolidCraft 实例 | 确认 SolidCraft 已启动、AI 控制通道已开启，并与查看器使用同一 Windows 账号。 |
+| 浏览器没有自动打开 | 复制启动窗口显示的 `http://127.0.0.1:端口/` 地址到浏览器。 |
+| 提示没有观察档案 | 先运行“记录建模过程”，完成建模操作后再查看记录。 |
 
-修改实时界面后，用 `python topology-live/build-live-ui.py` 重新生成 HTML；
-离线样例界面由 `topology-visualization/build-page.py` 生成，档案几何页由
-`transaction-live/build_geometry.py` 生成。生成后检查相应 HTML 变更再提交。
+只想先看效果？直接用浏览器打开 [topology-visualization/solidcraft-topology.html](topology-visualization/solidcraft-topology.html)，即可查看固定样例，无需启动 SolidCraft 或安装 Python。
