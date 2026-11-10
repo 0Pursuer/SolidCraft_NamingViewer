@@ -88,6 +88,7 @@ verification-control*/
 /transaction-live/*.png
 /transaction-live/flow-browser-*/
 /transaction-live/recompute-browser-*/
+/transaction-live/lifecycle-browser-*/
 /transaction-live/lab-fixture-*/
 
 # Operating system clutter

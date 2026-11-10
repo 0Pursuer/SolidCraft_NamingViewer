@@ -25,6 +25,7 @@ from native import Recorder, available_instances, select_instance, safe_error
 from rebuild import Rebuilder
 from flow_model import build_flow
 from recompute_model import build_recompute
+from lifecycle_model import build_lifecycle
 from solidcraft_instances import default_control_dir
 
 ROOT = Path(__file__).resolve().parent
@@ -141,7 +142,44 @@ def make_handler(archive, recorder, rebuilder, version, token, port, recompute_l
                     return
                 if not self.authenticated():
                     return
-                if path == '/api/recompute':
+                if path in {'/lifecycle.js', '/lifecycle.css'} and not query:
+                    mime = 'text/javascript; charset=utf-8' if path.endswith('.js') else 'text/css; charset=utf-8'
+                    self.send_data((ROOT / path[1:]).read_bytes(), content_type=mime)
+                elif path == '/api/recompute/lifecycle':
+                    if set(query) - {'before_id', 'after_id', 'job_id'} or any(len(v) != 1 for v in query.values()):
+                        raise ValueError('对象关系视图只接受观察对和实验编号')
+                    ids = {key: int(query[key][0]) for key in ('before_id', 'after_id') if key in query}
+                    if any(not 1 <= value <= 2**63 - 1 for value in ids.values()) or bool('before_id' in ids) != bool('after_id' in ids):
+                        raise ValueError('请选择完整的一对观察编号')
+                    job_id = query.get('job_id', [None])[0]
+                    if job_id is not None and not re.fullmatch(r'[a-f0-9]{32}', job_id):
+                        raise ValueError('实验编号无效')
+                    job = recompute_lab.get(job_id) if recompute_lab and job_id else None
+                    if job_id and not job:
+                        raise FileNotFoundError()
+                    def read_phase_asset(index, name):
+                        if (type(index) is not int or index < 0 or name not in {'document.json', 'inspect.json'}
+                                or not job or index >= len(job.get('phases', []))):
+                            raise ValueError('对象关系仅允许读取已保存阶段的定义和观察')
+                        ref = job['phases'][index].get('assets', {}).get(name)
+                        if not isinstance(ref, dict) or type(ref.get('size')) is not int or not 0 <= ref['size'] <= 2 * 1024 * 1024:
+                            raise ValueError('阶段资源缺失或超过2MiB读取限制')
+                        asset = recompute_lab.asset_path(job_id, index, name)
+                        if asset.stat().st_size > 2 * 1024 * 1024:
+                            raise ValueError('阶段资源超过2MiB读取限制')
+                        with asset.open('rb') as source:
+                            raw = source.read(2 * 1024 * 1024 + 1)
+                        if len(raw) != ref['size']:
+                            raise ValueError('阶段资源长度变化')
+                        return raw
+                    with flow_lock:
+                        plan = build_recompute(archive, **ids)
+                        value = build_lifecycle(plan, job, read_phase_asset if job else None)
+                    data = json.dumps(value, ensure_ascii=False, allow_nan=False).encode('utf-8')
+                    if len(data) > 2 * 1024 * 1024:
+                        raise ValueError('对象关系视图超过2MiB响应预算')
+                    self.send_data(data)
+                elif path == '/api/recompute':
                     if set(query) - {'before_id', 'after_id'} or any(len(v) != 1 for v in query.values()):
                         raise ValueError('重算视图只接受观察编号')
                     ids = {k: int(v[0]) for k, v in query.items()}
@@ -228,7 +266,7 @@ def make_handler(archive, recorder, rebuilder, version, token, port, recompute_l
                     self.export_archive()
                 else:
                     self.fail(404, '接口不存在')
-            except (BrokenPipeError, ConnectionResetError):
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
                 return
             except (ValueError, KeyError, TypeError) as exc:
                 self.fail(400, safe_error(exc))

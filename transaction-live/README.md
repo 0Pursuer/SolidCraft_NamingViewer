@@ -116,3 +116,7 @@ py -3 -m unittest test_ui_browser -v
 
 
 重算机制演示：启动 start-flow-viewer.cmd 后点击「重算演示」。源码流程与独立 CLI 实测分开显示，说明与边界见 [RECOMPUTE-VERIFICATION.md](RECOMPUTE-VERIFICATION.md)。
+
+该页面的「Session · Document · Model · Snapshot」区域提供对象关系和修改/Undo 调用演示，见 [LIFECYCLE-VERIFICATION.md](LIFECYCLE-VERIFICATION.md)。源码步骤不等于函数级运行 trace；只有通过校验的已保存阶段和匹配本次修改的原生命令回复标为实测。浏览和关联实验只读取数据。
+
+`test_lifecycle_real.py` 会在临时目录创建原生样例，用独立无界面 CLI 完成 20 → 40 → Undo，再通过本地测试服务验证网页。它不连接桌面实例，也不依赖个人档案或固定实验编号；未安装 CLI 或 Playwright 时明确跳过。
